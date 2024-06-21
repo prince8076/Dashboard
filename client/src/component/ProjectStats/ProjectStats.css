@@ -1,0 +1,56 @@
+.container {
+    margin: 20px auto;
+    max-width: 80%;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #343a40;
+  }
+  
+  .table {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table thead {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .table thead th {
+    text-align: center;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .table tbody td {
+    text-align: center;
+  }
+  
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+  }
+  
+  .table-bordered {
+    border: 1px solid #dee2e6;
+  }
+  
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  .spinner-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .error-alert {
+    text-align: center;
+    margin-top: 20px;
+    color: red;
+  }
+  

@@ -1,0 +1,30 @@
+.analytics-container {
+    padding: 100px; 
+  }
+  
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .filters label {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+  }
+  
+  .chart-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 60px;
+  }
+  
+  .chart {
+    flex: 1 1 100%; /* Each chart takes 100% of the width */
+    min-width: 800px; /* Minimum width of each chart */
+    height: 600px; /* Height of each chart */
+    margin-bottom: 60px; /* Vertical margin between charts */
+  }
+  
