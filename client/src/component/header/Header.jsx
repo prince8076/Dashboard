@@ -12,8 +12,6 @@ import InputBase from '@mui/material/InputBase';
 import { alpha, styled } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-// import Box from '@mui/material/Box';
-// import axios from 'axios';
 
 // Styled components
 const Search = styled('div')(({ theme }) => ({
