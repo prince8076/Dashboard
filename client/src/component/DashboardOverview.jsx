@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Card, CardContent, Typography, Grid } from '@mui/material';
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 const DashboardOverview = () => {
     const [analyticsSummary, setAnalyticsSummary] = useState({
@@ -61,22 +64,46 @@ const DashboardOverview = () => {
         }
     };
 
+    const pieData = [
+        { name: 'Unique Topics', value: analyticsSummary.uniqueTopics },
+        { name: 'Unique Regions', value: analyticsSummary.uniqueRegions },
+    ];
+
+    const barData = [
+        { name: 'Likelihood', value: projectSummary.totalLikelihood },
+        { name: 'Relevance', value: projectSummary.totalRelevance },
+        { name: 'Intensity', value: analyticsSummary.totalIntensity },
+    ];
+
     return (
         <Grid container spacing={3}>
+            {/* Analytics Overview with Pie Chart */}
             <Grid item xs={12} md={6}>
                 <Card>
                     <CardContent>
                         <Typography variant="h6" gutterBottom>
                             Analytics Overview
                         </Typography>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <PieChart>
+                                <Pie
+                                    data={pieData}
+                                    cx="50%"
+                                    cy="50%"
+                                    label
+                                    outerRadius={100}
+                                    fill="#8884d8"
+                                    dataKey="value"
+                                >
+                                    {pieData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                    ))}
+                                </Pie>
+                                <Tooltip />
+                            </PieChart>
+                        </ResponsiveContainer>
                         <Typography variant="body2">
                             Total Records: {analyticsSummary.totalRecords}
-                        </Typography>
-                        <Typography variant="body2">
-                            Unique Topics: {analyticsSummary.uniqueTopics}
-                        </Typography>
-                        <Typography variant="body2">
-                            Unique Regions: {analyticsSummary.uniqueRegions}
                         </Typography>
                         <Typography variant="body2">
                             Total Intensity: {analyticsSummary.totalIntensity}
@@ -84,23 +111,29 @@ const DashboardOverview = () => {
                     </CardContent>
                 </Card>
             </Grid>
+
+            {/* Project Overview with Bar Chart */}
             <Grid item xs={12} md={6}>
                 <Card>
                     <CardContent>
                         <Typography variant="h6" gutterBottom>
                             Project Overview
                         </Typography>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={barData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="value" fill="#82ca9d" />
+                            </BarChart>
+                        </ResponsiveContainer>
                         <Typography variant="body2">
                             Total Records: {projectSummary.totalRecords}
                         </Typography>
                         <Typography variant="body2">
                             Unique Countries: {projectSummary.uniqueCountries}
-                        </Typography>
-                        <Typography variant="body2">
-                            Total Likelihood: {projectSummary.totalLikelihood}
-                        </Typography>
-                        <Typography variant="body2">
-                            Total Relevance: {projectSummary.totalRelevance}
                         </Typography>
                     </CardContent>
                 </Card>

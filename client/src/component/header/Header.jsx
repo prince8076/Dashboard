@@ -10,13 +10,15 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { alpha, styled } from '@mui/material/styles';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor: alpha(theme.palette.common.white, 0.25),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: alpha(theme.palette.common.white, 0.35),
   },
   marginLeft: 0,
   width: '100%',
@@ -24,6 +26,10 @@ const Search = styled('div')(({ theme }) => ({
     marginLeft: theme.spacing(1),
     width: 'auto',
   },
+  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+  transition: theme.transitions.create(['background-color', 'box-shadow'], {
+    duration: theme.transitions.duration.short,
+  }),
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -44,14 +50,24 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: '20ch',
+      width: '25ch',
     },
   },
 }));
 
 const Header = () => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" sx={{ backgroundColor: '#3f51b5', padding: '0 1rem' }}>
       <Toolbar>
         <IconButton
           edge="start"
@@ -73,20 +89,40 @@ const Header = () => {
             inputProps={{ 'aria-label': 'search' }}
           />
         </Search>
-        <IconButton color="inherit">
+        <IconButton color="inherit" sx={{ ml: 2 }}>
           <Badge badgeContent={4} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>
         <IconButton
-          size="large"
           edge="end"
           aria-label="account of current user"
+          aria-controls="menu-appbar"
           aria-haspopup="true"
+          onClick={handleMenu}
           color="inherit"
         >
           <AccountCircleIcon />
         </IconButton>
+        <Menu
+          id="menu-appbar"
+          anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleClose}>Profile</MenuItem>
+          <MenuItem onClick={handleClose}>My account</MenuItem>
+          <MenuItem onClick={handleClose}>Logout</MenuItem>
+        </Menu>
       </Toolbar>
     </AppBar>
   );
