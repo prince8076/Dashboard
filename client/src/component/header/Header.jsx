@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -12,7 +12,10 @@ import InputBase from '@mui/material/InputBase';
 import { alpha, styled } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+// import Box from '@mui/material/Box';
+// import axios from 'axios';
 
+// Styled components
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -55,8 +58,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Header = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const Header = ({ onSearchChange }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    if (onSearchChange) {
+      onSearchChange(searchTerm);
+    }
+  }, [searchTerm, onSearchChange]);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -87,6 +97,8 @@ const Header = () => {
           <StyledInputBase
             placeholder="Search…"
             inputProps={{ 'aria-label': 'search' }}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Search>
         <IconButton color="inherit" sx={{ ml: 2 }}>

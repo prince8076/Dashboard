@@ -4,13 +4,13 @@ import { Table, Spinner, Alert, Card, CardBody, CardTitle, Button } from 'reacts
 import { FaCalendarAlt, FaExclamationCircle } from 'react-icons/fa';
 import './ProjectStats.css';
 
-const ProjectStats = () => {
+const ProjectStats = ({ searchTerm }) => {
   const [projectsData, setProjectsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 10; // Number of records per page
-  const maxVisiblePages = 4; // Max number of page buttons to show at a time
+  const recordsPerPage = 10;
+  const maxVisiblePages = 4;
 
   useEffect(() => {
     fetchData();
@@ -29,15 +29,17 @@ const ProjectStats = () => {
     }
   };
 
-  // Calculate the range of records to display based on the current page
+  // Filter projects based on the search term
+  const filteredRecords = projectsData.filter((project) =>
+    project.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Pagination logic
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-  const currentRecords = projectsData.slice(indexOfFirstRecord, indexOfLastRecord);
+  const currentRecords = filteredRecords.slice(indexOfFirstRecord, indexOfLastRecord);
+  const totalPages = Math.ceil(filteredRecords.length / recordsPerPage);
 
-  // Determine the total number of pages
-  const totalPages = Math.ceil(projectsData.length / recordsPerPage);
-
-  // Determine the range of page numbers to display
   const getPageNumbers = () => {
     const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
     const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
@@ -46,24 +48,6 @@ const ProjectStats = () => {
       pages.push(i);
     }
     return pages;
-  };
-
-  // Handle page click
-  const handlePageClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  // Handle next and previous
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
   };
 
   return (
@@ -108,7 +92,7 @@ const ProjectStats = () => {
               <div className="pagination-container">
                 <Button
                   color="secondary"
-                  onClick={handlePrevious}
+                  onClick={() => setCurrentPage(currentPage - 1)}
                   disabled={currentPage === 1}
                   className="pagination-button"
                 >
@@ -118,7 +102,7 @@ const ProjectStats = () => {
                   <Button
                     key={pageNumber}
                     color={currentPage === pageNumber ? 'primary' : 'secondary'}
-                    onClick={() => handlePageClick(pageNumber)}
+                    onClick={() => setCurrentPage(pageNumber)}
                     className="pagination-button"
                   >
                     {pageNumber}
@@ -126,7 +110,7 @@ const ProjectStats = () => {
                 ))}
                 <Button
                   color="secondary"
-                  onClick={handleNext}
+                  onClick={() => setCurrentPage(currentPage + 1)}
                   disabled={currentPage === totalPages}
                   className="pagination-button"
                 >
